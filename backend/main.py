@@ -18,7 +18,7 @@ app.add_middleware(
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
-db = FAISS.load_local("enie_index", embeddings)
+db = FAISS.load_local("enie_index", embeddings, allow_dangerous_deserialization=True)
 
 llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="gpt-4", temperature=0)
 qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
