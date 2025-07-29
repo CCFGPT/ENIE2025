@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Asistente ENIE® 2025</title>
+  <style>
+    body { font-family: Arial; background: #f4f6f9; margin: 0; padding: 0; }
+    #enie-chat { position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); padding: 10px; }
+    #chat-box { height: 250px; overflow-y: auto; border: 1px solid #ddd; padding: 5px; margin-bottom: 10px; font-size: 14px; background: #fafafa; }
+    input { width: 80%; padding: 5px; }
+    button { width: 18%; background: #004080; color: white; border: none; padding: 5px; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0066cc; }
+  </style>
+</head>
+<body>
+<div id="enie-chat">
+    <div style="font-weight: bold; margin-bottom: 10px; text-align: center; color: #004080;">Asistente ENIE® 2025</div>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Escribe tu pregunta...">
+    <button onclick="sendMessage()">→</button>
+</div>
+
+<script>
+async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML += `<div><b>Tú:</b> ${message}</div>`;
+    input.value = '';
+
+    const res = await fetch('https://enie-assistant-backend.onrender.com/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message})
+    });
+
+    const data = await res.json();
+    chatBox.innerHTML += `<div style="color:#004080;"><b>ENIE:</b> ${data.reply}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+</script>
+</body>
+</html>
