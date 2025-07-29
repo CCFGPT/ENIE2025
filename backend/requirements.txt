@@ -4,3 +4,4 @@ requests
 openai
 langchain
 faiss-cpu
+langchain-community
